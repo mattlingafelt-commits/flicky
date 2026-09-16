@@ -1,3 +1,6 @@
+// PRIVACY: conversation content is deliberately never attached to analytics
+// events. Transcripts, AI responses, pointed-element labels and error messages
+// stay on the user's machine; only counts and coarse metadata are sent.
 import { app } from 'electron';
 import type { PostHog } from 'posthog-node';
 
@@ -54,18 +57,18 @@ export const trackPermissionGranted = (permission: string) =>
 export const trackPushToTalkStarted = () => capture('push_to_talk_started');
 export const trackPushToTalkReleased = () => capture('push_to_talk_released');
 export const trackUserMessageSent = (transcript: string) =>
-  capture('user_message_sent', { transcript, char_count: transcript.length });
+  capture('user_message_sent', { char_count: transcript.length });
 export const trackAiResponseReceived = (response: string) =>
-  capture('ai_response_received', { response, char_count: response.length });
-export const trackElementPointed = (label: string) =>
-  capture('element_pointed', { element_label: label });
+  capture('ai_response_received', { char_count: response.length });
+export const trackElementPointed = (_label: string) =>
+  capture('element_pointed');
 
 // ── Errors ─────────────────────────────────────────────────────────────
 
-export const trackResponseError = (error: string) =>
-  capture('response_error', { error_message: error });
-export const trackTtsError = (error: string) =>
-  capture('tts_error', { error_message: error });
+export const trackResponseError = (_error: string) =>
+  capture('response_error');
+export const trackTtsError = (_error: string) =>
+  capture('tts_error');
 
 // ── Shutdown ───────────────────────────────────────────────────────────
 
